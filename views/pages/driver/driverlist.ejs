@@ -1,0 +1,155 @@
+<div id="driverlist" v-cloak>
+
+  <!-- delete modal with dialogbox -------------------------------------------------------------------------------------------------------------------->
+  <% /* "Delete" modal */ %>
+  <modal class="modal fade" v-if="deleteModelOpen" @close="closeDeleteModal()" v-cloak>
+    <div class="modal-header">
+      <h5 class="modal-title text-center">Remove Item</h5>
+      <button type="button" class="modal-close-button" data-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <ajax-form v-bind:action="removeAction" :syncing.sync="syncing" :cloud-error.sync="cloudError"
+      :handle-parsing="handleParsingDeleteForm" @submitted="submittedDeleteForm($event)">
+      <div class="modal-body text-center" v-if="selectedItems.length>0">
+        Are you sure you want to remove selected {{selectedItems.length}} Item(s) ?
+      </div>
+      <div class="modal-body text-center" v-else>
+        No Items Selected.
+      </div>
+      <div class="modal-footer flex-row-reverse justify-content-between" v-if="selectedItems.length>0">
+        <p class="text-danger" v-if="cloudError"><small>An error occured while processing your request. Please check
+            your information and try again, or <a href="/contact">contact support</a> if the error persists.</small>
+        </p>
+        <ajax-button type="submit" :syncing="syncing" class="btn-danger btn-lg">Yes</ajax-button>
+        <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">Cancel</button>
+      </div>
+      <div class="modal-footer" v-else>
+        <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Ok</button>
+      </div>
+    </ajax-form>
+  </modal>
+
+  <!-- delete modal with dialogbox -------------------------------------------------------------------------------------------------------------------->
+  <% /* "Delete" modal */ %>
+
+<div class="container">
+  <div class="row mt-4">
+    <h2 class="col-md-8 pull-left">Driver Manager</h2>
+    <div class="col-md-4 pull-right">
+
+      <a v-bind:href="itemView" class="btn btn-success btn-sm text-white  pull-right py-2"><i
+          class="fa fa-plus"></i>&nbsp;&nbsp;Add New</a>
+      <a @click="deleteItems()" class="btn btn-danger btn-sm pull-right text-white py-2 mr-sm-2 mr-2"><i
+          class="fa fa-minus"></i>&nbsp;&nbsp;Delete</a>
+    </div>
+  </div>
+  
+<hr>
+  <!-- table -->
+
+  <form  method="get" class="form-inline py-3">
+
+    <label class="sr-only" for="inlineFormInputName2">Search</label>
+    <input type="text" class="form-control mb-2 mr-sm-2" id="name" name="name" 
+      placeholder="Search by Name" v-model="formData.name"> 
+    <select class="form-control mb-2 mr-sm-2" style="color: #000;" 
+      name="visibility" v-model="formData.visibility">
+      <option value="-1">All</option>
+      <option value="1">Publish</option>
+      <option value="0">Unpublish</option>
+    </select>
+    <button type="submit" class="btn btn-success mb-2">Search</button>
+   
+    
+
+  </form>
+
+  <section id="menu-table">
+    <table class="table mt-4">
+      <thead class="thead-dark">
+        <tr>
+          
+          <th class="text-center"><input type="checkbox" @click="selectAll" v-model="allSelected"></th>
+          <th scope="col">Driver Name</th>
+          <th scope="col" class="text-center">Category</th>
+          <th scope="col" class="text-center">Contact Name</th>
+          <th scope="col" class="text-center">Contact Number</th>
+          <th scope="col" class="text-center">Publish</th>
+          <th scope="col" class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody v-for="item in data">
+
+        
+
+        <tr>
+          <td class="text-center"><input type="checkbox" class="text-center" v-model="selectedItems" @click="select" :value="item.id"></td>
+          <td><a v-bind:href="itemView+item.id">{{item.name}}</a></td>
+          <td class="text-center">{{item.category.category_name}}</td>
+          <td class="text-center">{{item.name}}</td>
+          <td class="text-center">{{item.contact_number}}</td>
+          <td class="text-center">
+            <svg v-if="item.visibility==1" class="bi bi-check-circle text-success" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd" />
+              <path fill-rule="evenodd" d="M8 2.5A5.5 5.5 0 1013.5 8a.5.5 0 011 0 6.5 6.5 0 11-3.25-5.63.5.5 0 11-.5.865A5.472 5.472 0 008 2.5z" clip-rule="evenodd" />
+            </svg>
+
+            <svg v-else class="bi bi-x-circle text-danger" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd" />
+              <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z" clip-rule="evenodd" />
+              <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z" clip-rule="evenodd" />
+            </svg>
+          </td>
+          <td class="text-center">
+            <div class="btn-group btn-group-toggle btn-group-sm" data-toggle="buttons">
+              <label class="btn btn-primary" @click="showEditView(item.id)">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              </label>
+              <label class="btn btn-danger" @click="deleteOneItem(item.id)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </label>
+            </div>
+          </td>
+          <tfoot v-if="data.length == 0 ">
+            <tr>
+              <td colspan="7" class="text-center">No Data Found.</td>
+            </tr>
+          </tfoot>
+        </tr>
+
+      </tbody>
+    </table>
+    <!-- Pegination -->
+    <nav aria-label="Page navigation example " class="table-pagination small">
+      <ul class="pagination justify-content-end">
+        <ul class="pagination">
+
+          <li :class="page == 0 ? 'page-item disabled' : 'page-item'">
+            <a class="page-link" :href="listView+'?page=0'" tabindex="-1">Start</a>
+          </li>
+
+          <li :class="page == 0 ? 'page-item disabled' : 'page-item'">
+            <a class="page-link" :href="listView+'?page='+(page-1)" tabindex="-1">Previous</a>
+          </li>
+
+          <li :class="page == n ? 'page-item active' : 'page-item'" v-for="n in pagination(page,pageCount-1)">
+            <a class="page-link" :href="listView+'?page='+(n)">{{n+1}}</a>
+          </li>
+
+          <li :class="page+1 >= pageCount ? 'page-item disabled' : 'page-item'">
+            <a class="page-link" :href="listView+'?page='+(page+1)" tabindex="-1">Next</a>
+          </li>
+
+          <li :class="page+1 >= pageCount ? 'page-item disabled' : 'page-item'">
+            <a class="page-link" :href="listView+'?page='+(pageCount-1)" tabindex="-1">End</a>
+          </li>
+
+        </ul>
+      </ul>
+    </nav>
+    <!-- Pegination -->
+  </section>
+</div>
+  
+
+</div>
+<%- /* Expose server-rendered data as window.SAILS_LOCALS :: */ exposeLocalsToBrowser() %>

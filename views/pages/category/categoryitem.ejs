@@ -1,0 +1,71 @@
+<div id="categoryitem" v-cloak>
+
+  <div class="container">
+    <div class="row"> 
+      <h2 class="col-md-8 mb-5">{{formData.id==0?'Add a New Category' : 'Edit Category '}}</h2>
+      <div class="col-md-4">
+
+        <a href="/category/category-list" class="btn btn-dark text-white px-4 ml-1" style="float: right;">Back</a>
+
+      </div>
+    </div>
+
+    <div ref="message" class="alert alert-success alert-dismissible fade show" role="alert" v-if='saved'>
+      <strong>Saved</strong> Successfully.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <ajax-form :action="saveAction" :syncing.sync="syncing" :cloud-error.sync="cloudError" @submitted="submittedForm($event)" :handle-parsing="handleParsingForm">
+      <label for="visibility">Visibility *</label><br>
+      <select class="edit-field form-control" id="visibility" name="visibility" 
+        :class="[formErrors.visibility ? 'is-invalid' : '']" v-model.trim="formData.visibility">
+        <option value="0">Un-publish</option>
+        <option value="1">Publish</option>
+      </select>
+      <div class="invalid-feedback" v-if="formErrors.visibility">Please select type.</div><br>
+      
+      <label for="category_name">Category Name *</label>
+      <input type="text" id="category_name" class="form-control" :class="[formErrors.category_name ? 'is-invalid' : '']" v-model.trim="formData.category_name" placeholder="Category Name">
+      <div class="invalid-feedback" v-if="formErrors.category_name">Please fill above to submit.</div><br>
+
+      <label for="category_id">Category Id *</label>
+      <input type="text" id="category_id" class="form-control" :class="[formErrors.category_id ? 'is-invalid' : '']" v-model.trim="formData.category_id" placeholder="Category Id">
+      <div class="invalid-feedback" v-if="formErrors.category_id">Please fill above to submit.</div><br>
+
+
+      <label for="slug">Slug *</label><br>
+        <input type="text" id="slug" class="form-control" :class="[formErrors.slug ? 'is-invalid' : '']" v-model.trim="formData.slug" placeholder="Slug Auto Created" :disabled="formData.id == 0">
+         <div class="invalid-feedback" v-if="formErrors.slug">Please fill above to submit.</div><br>
+         
+      <label for="order">Image *</label>
+      
+      <!-- FILE UPLOAD -->
+      <fileupload :syncing.sync="syncing" :file.sync="formData.image" :class="[formErrors.image ? 'is-invalid' : '']" accept="image/*"></fileupload>
+      <div class="invalid-feedback" v-if="formErrors.image">Please upload an image.</div><br>
+
+      <label for="mobile_image">Mobile Image *</label>
+     
+      <!-- FILE UPLOAD -->
+      <fileupload :syncing.sync="syncing" :file.sync="formData.mobile_image" :class="[formErrors.mobile_image ? 'is-invalid' : '']" accept="image/*"></fileupload>
+      <div class="invalid-feedback" v-if="formErrors.mobile_image">Please upload an image.</div><br>
+
+      <label for="description">Description *</label><br>
+      <textarea type="text" id="description" class="form-control" :class="[formErrors.description ? 'is-invalid' : '']"
+        v-model.trim="formData.description" placeholder="Description"></textarea>
+      <div class="invalid-feedback" v-if="formErrors.description">Please fill description to submit.</div><br>
+
+
+      <p class="text-danger" v-if="cloudError"><small>An error occured while processing your request. Please check your
+          information and try again, or <a href="/contact">contact support</a> if the error persists.</small></p>
+          <div class="pull-right">
+
+            <a :href="listView"><input type="button" value="Cancel" class="btn btn-danger"></a>&nbsp;
+            <ajax-button class="btn btn-success" :syncing="syncing" @click="savedAndClose()">Save & Close</ajax-button>&nbsp;
+            <ajax-button class="btn btn-success" :syncing="syncing">Save</ajax-button>&nbsp;<br><br>
+          </div>
+        </ajax-form>
+        
+      </div>
+</div>
+<%- /* Expose server-rendered data as window.SAILS_LOCALS :: */ exposeLocalsToBrowser() %>

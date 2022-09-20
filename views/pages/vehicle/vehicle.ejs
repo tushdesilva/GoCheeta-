@@ -1,0 +1,86 @@
+<div id="vehicle" v-cloak>
+
+  <div class="container">
+    <div class="row">
+      <h2 class="col-md-8 mb-5">{{formData.id==0?'Add a New Vehicle' : 'Edit Vehicle'}}</h2>
+      <div class="col-md-4">
+
+        <a href="/vehicle/vehiclelist" class="btn btn-dark text-white px-4 ml-1" style="float: right;">Back</a>
+
+      </div>
+    </div>
+
+    <div ref="message" class="alert alert-success alert-dismissible fade show" role="alert" v-if='saved'>
+      <strong>Saved</strong> Successfully.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <ajax-form :action="saveAction" :syncing.sync="syncing" :cloud-error.sync="cloudError"
+      @submitted="submittedForm($event)" :handle-parsing="handleParsingForm">
+
+      <label for="visibility">Visibility *</label><br>
+      <select class="edit-field form-control" id="visibility" name="visibility"
+        :class="[formErrors.visibility ? 'is-invalid' : '']" v-model.trim="formData.visibility">
+        <option value="0">Un-publish</option>
+        <option value="1">Publish</option>
+      </select>
+      <div class="invalid-feedback" v-if="formErrors.visibility">Please Select a Type.</div><br>
+
+      
+
+      <label for="featured">Featured *</label><br>
+      <select class="edit-field form-control" id="featured" name="featured"
+        :class="[formErrors.featured ? 'is-invalid' : '']" v-model.trim="formData.featured">
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+      </select>
+      <div class="invalid-feedback" v-if="formErrors.featured">Please Select a Type.</div><br>
+
+      <label for="vehicle_id">Vehicle Id *</label><br>
+      <input type="text" id="vehicle_id" class="form-control" :class="[formErrors.vehicle_id ? 'is-invalid' : '']"
+        v-model.trim="formData.vehicle_id" placeholder="Vehicle Id">
+      <div class="invalid-feedback" v-if="formErrors.vehicle_id">Please Fill Above to Submit.</div><br>
+
+      <label for="category">Category *</label><br>
+      <select class="edit-field form-control" id="category" name="category"
+        :class="[formErrors.category ? 'is-invalid' : '']" v-model.trim="formData.category">
+        <option value="">Select Category</option>
+        <option v-for="category in categories" :value="category.id">{{category.category_name}}</option>
+      </select>
+      <div class="invalid-feedback" v-if="formErrors.category">Please Select a Category.</div><br>
+
+
+      <label for="vehicle_brand">Vehicle Brand *</label><br>
+      <input type="text" id="vehicle_brand" class="form-control" :class="[formErrors.vehicle_brand ? 'is-invalid' : '']"
+        v-model.trim="formData.vehicle_brand" placeholder="Vehicle Brand">
+      <div class="invalid-feedback" v-if="formErrors.vehicle_brand">Please Fill Above to Submit.</div><br>
+
+      <label for="vehicle_name">Vehicle Name *</label><br>
+      <input type="text" id="vehicle_name" class="form-control" :class="[formErrors.vehicle_name ? 'is-invalid' : '']"
+        v-model.trim="formData.vehicle_name" placeholder="Vehicle Name">
+      <div class="invalid-feedback" v-if="formErrors.vehicle_name">Please Fill Above to Submit.</div><br>
+
+      <label for="vehicle_number">Vehicle Number *</label><br>
+      <input type="text" id="vehicle_number" class="form-control" :class="[formErrors.vehicle_number ? 'is-invalid' : '']"
+        v-model.trim="formData.vehicle_number" placeholder="Vehicle Number">
+      <div class="invalid-feedback" v-if="formErrors.vehicle_number">Please Fill Above to Submit.</div><br>
+
+      <label for="image_url">Image *</label>
+      <fileupload :syncing.sync="syncing" :file.sync="formData.image" :class="[formErrors.image ? 'is-invalid' : '']"
+        accept="image/*"></fileupload>
+      <div class="invalid-feedback" v-if="formErrors.image">Please Upload an Image.</div><br>
+
+
+      <p class="text-danger" v-if="cloudError"><small>An error occured while processing your request. Please check your
+          information and try again, or <a href="/contact">contact support</a> if the error persists.</small></p>
+      <div class="pull-right">
+        <a :href="listView"><input type="button" value="Cancel" class="btn btn-danger"></a>&nbsp;
+        <ajax-button class="btn btn-success" :syncing="syncing" @click="savedAndClose()">Save & Close</ajax-button>&nbsp;
+        <ajax-button class="btn btn-success" :syncing="syncing">Save</ajax-button><br><br>
+      </div>
+    </ajax-form>
+  </div>
+
+</div>
+<%- /* Expose server-rendered data as window.SAILS_LOCALS :: */ exposeLocalsToBrowser() %>

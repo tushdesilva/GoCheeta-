@@ -1,0 +1,103 @@
+<div id="driveritem" v-cloak>
+
+  <div class="container">
+    <div class="row">
+      <h2 class="col-md-8 mb-5">{{formData.id==0?'Add a New Driver' : 'Edit Driver'}}</h2>
+      <div class="col-md-4">
+
+        <a href="/driver/driverlist" class="btn btn-dark text-white px-4 ml-1"
+          style="float: right;">Back</a>
+
+      </div>
+    </div>
+
+    <div ref="message" class="alert alert-success alert-dismissible fade show" role="alert" v-if='saved'>
+      <strong>Saved</strong> Successfully.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <ajax-form :action="saveAction" :syncing.sync="syncing" :cloud-error.sync="cloudError"
+      @submitted="submittedForm($event)" :handle-parsing="handleParsingForm">
+
+      <label for="visibility">Visibility *</label><br>   
+              <select class="edit-field form-control" id="visibility" name="visibility" :class="[formErrors.visibility ? 'is-invalid' : '']" v-model.trim="formData.visibility">
+                  <option value="0">Un-publish</option>
+                  <option value="1">Publish</option>
+                </select>
+                <div class="invalid-feedback" v-if="formErrors.visibility">Please select type.</div><br>
+
+      <label for="featured">Featured *</label><br>   
+              <select class="edit-field form-control" id="featured" name="featured" :class="[formErrors.featured ? 'is-invalid' : '']" v-model.trim="formData.featured">
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+      <div class="invalid-feedback" v-if="formErrors.featured">Please select type.</div><br>
+
+      <label for="name">Driver Name *</label><br>
+      <input type="text" id="application_id" class="form-control"
+        :class="[formErrors.name ? 'is-invalid' : '']" v-model.trim="formData.name"
+        placeholder="Driver Name">
+      <div class="invalid-feedback" v-if="formErrors.name">Please fill above to submit.</div><br>
+
+      <label for="Code">Driver Code *</label><br>
+      <input type="text" id="driver_code" class="form-control" :class="[formErrors.driver_code ? 'is-invalid' : '']"
+        v-model.trim="formData.driver_code" placeholder="Driver Code">
+      <div class="invalid-feedback" v-if="formErrors.driver_code">Please fill above to submit.</div><br>
+
+      <label for="driver_id">Driver Id *</label><br>
+      <input type="text" id="driver_id" class="form-control" :class="[formErrors.driver_id ? 'is-invalid' : '']"
+        v-model.trim="formData.driver_id" placeholder="Driver Id">
+      <div class="invalid-feedback" v-if="formErrors.driver_id">Please fill above to submit.</div><br>
+
+      
+      <label for="contact_number">Contact Number *</label><br>
+      <input type="text" id="contact_number" class="form-control" :class="[formErrors.contact_number ? 'is-invalid' : '']"
+        v-model.trim="formData.contact_number" placeholder="Contact Number">
+      <div class="invalid-feedback" v-if="formErrors.contact_number">Please fill above to submit.</div><br>
+
+      <label for="category">Category *</label><br>
+      <select class="edit-field form-control" id="category" name="category"
+        :class="[formErrors.category ? 'is-invalid' : '']" v-model.trim="formData.category">
+        <option value="">Select Category</option>
+        <option v-for="category in categories" :value="category.id">{{category.category_name}}</option>
+      </select>
+      <div class="invalid-feedback" v-if="formErrors.category">Please select a Category.</div><br>
+
+      <label for="email">Email *</label><br>
+      <input type="text" id="email" class="form-control" :class="[formErrors.email ? 'is-invalid' : '']"
+        v-model.trim="formData.email" placeholder="Email">
+      <div class="invalid-feedback" v-if="formErrors.email">Please fill above to submit.</div><br>
+
+        <label for="address_line1">Address Line 1 *</label><br>
+        <input type="text" id="address_line1" class="form-control" :class="[formErrors.address_line1 ? 'is-invalid' : '']"
+        v-model.trim="formData.address_line1" placeholder="Address Line 1">
+        <div class="invalid-feedback" v-if="formErrors.address_line1">Please fill above to submit.</div><br>
+      
+      
+        <label for="address_line2">Address Line 2 </label><br>
+        <input type="text" id="address_line2" class="form-control" :class="[formErrors.address_line2 ? 'is-invalid' : '']"
+        v-model.trim="formData.address_line2" placeholder="Address Line 2">
+        <div class="invalid-feedback" v-if="formErrors.address_line2">Please fill above to submit.</div><br>
+
+        <label for="city">City *</label><br>
+        <input type="text" id="city" class="form-control" :class="[formErrors.city ? 'is-invalid' : '']"
+        v-model.trim="formData.city" placeholder="City">
+        <div class="invalid-feedback" v-if="formErrors.city">Please fill above to submit.</div><br>
+
+
+       
+      <p class="text-danger" v-if="cloudError"><small>An error occured while processing your request. Please check your information and try again, or <a href="/contact">contact support</a> if the error persists.</small></p>
+      
+      <div class="pull-right">
+
+        <a :href="listView"><input type="button" value="Cancel" class="btn btn-danger"></a>&nbsp;
+        <ajax-button class="btn btn-success " :syncing="syncing" @click="savedAndClose()">Save & Close</ajax-button>&nbsp;
+        <ajax-button class="btn btn-success " :syncing="syncing">Save</ajax-button>&nbsp;<br><br>
+      </div>
+      </ajax-form>
+    </ajax-form>
+  </div>
+
+</div>
+<%- /* Expose server-rendered data as window.SAILS_LOCALS :: */ exposeLocalsToBrowser() %>

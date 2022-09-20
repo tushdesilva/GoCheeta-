@@ -1,0 +1,66 @@
+/**
+ * importer.less
+ *
+ * By default, new Sails projects are configured to compile this file
+ * from LESS to CSS.  Unlike CSS files, LESS files are not compiled and
+ * included automatically unless they are imported below.
+ *
+ * For more information see:
+ *   https://sailsjs.com/anatomy/assets/styles/importer-less
+ */
+
+// Styleguide  (LESS mixins/variables only, no global selectors)
+@import 'styleguide/index.less';
+
+// Overall layout  (contains global selectors)
+@import 'bootstrap-overrides.less';
+@import 'layout.less';
+
+// Per-component styles
+// @import 'components/datepicker.component.less';
+@import 'components/datepicker.component.less';
+@import 'components/ajax-button.component.less';
+@import 'components/fileupload.component.less';
+
+// Per-page styles
+@import 'pages/homepage.less';
+@import 'pages/dashboard/welcome.less';
+@import 'pages/entrance/signup.less';
+@import 'pages/entrance/confirmed-email.less';
+@import 'pages/entrance/login.less';
+@import 'pages/entrance/forgot-password.less';
+@import 'pages/entrance/new-password.less';
+@import 'pages/account/account-overview.less';
+@import 'pages/account/edit-password.less';
+@import 'pages/account/edit-profile.less';
+@import 'pages/legal/terms.less';
+@import 'pages/legal/privacy.less';
+@import 'pages/faq.less';
+@import 'pages/contact.less';
+@import 'pages/404.less';
+@import 'pages/500.less';
+@import 'pages/498.less';
+@import 'pages/menu/menulist.less';
+@import 'pages/menu/menuitem.less';
+@import 'pages/merchant/merchantlist.less';
+@import 'pages/merchant/merchantitem.less';
+@import 'pages/bank/banklist.less';
+@import 'pages/bank/bank.less';
+@import 'pages/offer/offerlist.less';
+@import 'pages/offer/offer.less';
+@import 'pages/applicationmanager/applicationmanagerlist.less';
+@import 'pages/applicationmanager/applicationmanageritem.less';
+@import 'pages/category/category-list.less';
+@import 'pages/category/categoryitem.less';
+@import 'pages/slider/sliderlist.less';
+@import 'pages/slider/slider.less';
+@import 'pages/cards/cardslist.less';
+@import 'pages/cards/cardsitem.less';
+@import 'pages/newsmanager/newslist.less';
+@import 'pages/newsmanager/newsitem.less';
+@import 'pages/users/userlist.less';
+@import 'pages/users/user.less';
+@import 'pages/pagemanager/pagelist.less';
+@import 'pages/pagemanager/pageitem.less';
+@import 'pages/faq/faq-list.less';
+@import 'pages/faq/faqitem.less';

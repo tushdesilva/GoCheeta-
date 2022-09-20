@@ -1,0 +1,49 @@
+<div id="account-overview" v-cloak>
+  <div class="container">
+    <div class="row">
+      <h2 class="col-md-8 mb-5">My account</h2>
+      <div class="col-md-4">
+        <a href="/users/userlist" class="btn btn-dark text-white px-4 ml-1" style="float: right;">Back</a>
+      </div>
+    </div>
+    <hr/>
+    <div class="row mb-3">
+      <div class="col-sm-6">
+        <h4>Personal information</h4>
+      </div>
+      <div class="col-sm-6">
+        <span class="float-sm-right">
+          <a class="btn btn-sm btn-outline-info account-settings-button" :href="'/account/profile/'+ data.id">Edit profile</a>
+        </span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">Name:</div>
+      <div class="col"><strong>{{data.fullName}}</strong></div>
+    </div>
+    <div class="row">
+      <div class="col-3">Email:</div>
+      <div class="col">
+        <strong :class="[data.emailStatus === 'unconfirmed' || data.emailStatus === 'change-requested' ? 'text-muted' : '']">{{data.emailChangeCandidate ? data.emailChangeCandidate : data.emailAddress}}</strong>
+        <span v-if="data.emailStatus === 'unconfirmed' || data.emailStatus === 'change-requested'" class="badge badge-pill badge-warning">Unverified</span>
+      </div>
+    </div>
+    <hr/>
+    <div class="row mb-3">
+      <div class="col-sm-6">
+        <h4>Password</h4>
+      </div>
+      <div class="col-sm-6">
+        <span class="float-sm-right">
+          <a class="btn btn-sm btn-outline-info account-settings-button" :href="'/account/password/'+ data.id">Change password</a>
+        </span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">Password:</div>
+      <div class="col"><strong>••••••••••</strong></div>
+    </div>
+    <hr/>
+  </div>
+</div>
+<%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>

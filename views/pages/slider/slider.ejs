@@ -1,0 +1,59 @@
+<div id="slider" v-cloak>
+
+  <div class="container">
+    <div class="row">
+      <h2 class="col-md-8 mb-5">{{formData.id==0?' Add a New Slider' : 'Edit Slider '}}</h2>
+      <div class="col-md-4">
+
+        <a href="/slider/sliderlist" class="btn btn-dark text-white px-4 ml-1" style="float: right;">Back</a>
+
+      </div>
+    </div>
+
+    <div ref="message" class="alert alert-success alert-dismissible fade show" role="alert" v-if='saved'>
+      <strong>Saved</strong> Successfully.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <ajax-form :action="saveAction" :syncing.sync="syncing" :cloud-error.sync="cloudError" @submitted="submittedForm($event)" :handle-parsing="handleParsingForm">
+      <label for="visibility">Visibility *</label>
+      <select class="edit-field form-control" id="visibility" name="visibility"
+        :class="[formErrors.visibility ? 'is-invalid' : '']" v-model.trim="formData.visibility">
+        <option value="2">Un-publish</option>
+        <option value="1">Publish</option>
+      </select>
+      <div class="invalid-feedback" v-if="formErrors.visibility">Please select type.</div><br>
+      
+      <label for="slider_name">Slider Name *</label>
+      <input type="text" id="slider_name" class="form-control" :class="[formErrors.slider_name ? 'is-invalid' : '']" v-model.trim="formData.slider_name" placeholder="Slider Name">
+      <div class="invalid-feedback" v-if="formErrors.slider_name">Please fill above to submit.</div><br>
+
+      <label for="image_url ">Image *</label>
+      
+      <!-- FILE UPLOAD -->
+      <fileupload :syncing.sync="syncing" :file.sync="formData.image_url " :class="[formErrors.image_url  ? 'is-invalid' : '']" accept="image/*"></fileupload>
+      <div class="invalid-feedback" v-if="formErrors.image_url ">Please upload an image.</div><br>
+
+      
+
+      <label for="order">Order *</label>
+      <input type="text" id="order" class="form-control" :class="[formErrors.order ? 'is-invalid' : '']"v-model.trim="formData.order" placeholder="Order">
+      <div class="invalid-feedback" v-if="formErrors.order">Please fill above to submit.</div><br>
+
+      
+
+
+      <p class="text-danger" v-if="cloudError"><small>An error occured while processing your request. Please check your
+          information and try again, or <a href="/contact">contact support</a> if the error persists.</small></p>
+          <div class="pull-right">
+
+            <a :href="listView"><input type="button" value="Cancel" class="btn btn-danger"></a>&nbsp;
+            <ajax-button class="btn btn-success" :syncing="syncing" @click="savedAndClose()">Save & Close</ajax-button>&nbsp;
+            <ajax-button class="btn btn-success" :syncing="syncing">Save</ajax-button>&nbsp;<br><br>
+          </div>
+        </ajax-form>
+        
+      </div>
+</div>
+<%- /* Expose server-rendered data as window.SAILS_LOCALS :: */ exposeLocalsToBrowser() %>

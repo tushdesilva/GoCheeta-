@@ -1,0 +1,155 @@
+/* calendar css */
+.datetimepicker {
+  padding: 4px;
+  margin-top: 1px;
+  white-space: normal;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  direction: ltr;
+}
+
+th.switch {
+  width: 145px;
+  text-align: center;
+  font-weight: 700;
+}
+
+th.dow {
+  text-align: center;
+  font-weight: 700;
+}
+
+td.day.old {
+  text-align: center;
+  color: #999;
+  pointer-events: none;
+}
+
+td.day {
+  text-align: center;
+  cursor: pointer;
+}
+
+td.day.new {
+  color: #9b9b9b;
+  pointer-events: none;
+}
+
+span.hour {
+  display: block;
+  /* width: 23%; */
+  height: 54px;
+  line-height: 54px;
+  float: left;
+  margin: 1%;
+  cursor: pointer;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+table.table-condensed {
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 350px;
+  background-color: #eee;
+}
+
+.datetimepicker td {
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: none;
+}
+
+.datetimepicker span.hour, .datetimepicker span.month, .datetimepicker span.year {
+  display: block;
+  width: 23%;
+  /* height: 54px !important; */
+  float: left;
+  margin: 1%;
+  cursor: pointer;
+  border-radius: 4px;
+  height: 26px;
+  line-height: 26px;
+}
+
+.datetimepicker span.minute {
+  display: block;
+  width: 23%;
+  float: left;
+  margin: 1%;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+span.year.active, span.month.active, span.hour.active, span.minute.active {
+  background-color: #3a848f;
+  color: #f7fbfa;
+}
+
+span.year:hover, span.month:hover, span.hour:hover, span.minute:hover, th.prev:hover, th.next:hover {
+  background-color: #3c828d6e;
+}
+
+th.prev {
+  background-color: #eeeeee;
+  border-radius: 4px;
+}
+
+th.next {
+  background-color: #eeeeee;
+  border-radius: 4px;
+}
+
+td.day:hover {
+  background-color: #3c828d6e;
+}
+
+td.day.active {
+  background: #3b838e;
+  color: #f7fbfa;
+}
+
+/* input */
+span.input-group-addon {
+  width: 30px;
+  padding-top: 10px;
+}
+
+span.input-group-addon {
+  border: 1px solid #ced4d9;
+  height: 38px;
+  width: 35px;
+  background-color: #f7fbfa;
+  border-radius: 6px;
+  border-left-radius: 6px;
+}
+
+span.input-group-addon:hover {
+  background-color: #eeeeee;
+  border: 1px solid #eeeeee;
+}
+
+span.blink {
+  /* font-size: 25px; */
+  /* font-family: cursive; */
+  color: black;
+  animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: .5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

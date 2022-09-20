@@ -1,0 +1,104 @@
+<div id="userlist" v-cloak>
+
+ <!-- delete modal with dialogbox --------------------------------------------------------------------------------------------------------------------><% /* "Delete" modal */ %>
+ <modal class="modal fade" v-if="deleteModelOpen" @close="closeDeleteModal()" v-cloak>
+  <div class="modal-header">
+    <h5 class="modal-title text-center">Remove Item</h5>
+    <!-- <button type="button" class="modal-close-button" data-dismiss="modal" aria-label="Close"></button> -->
+  </div>
+  <ajax-form v-bind:action="removeAction" :syncing.sync="syncing" :cloud-error.sync="cloudError" :handle-parsing="handleParsingDeleteForm" @submitted="submittedDeleteForm($event)">
+    <div class="modal-body text-center" v-if="selectedItems.length>0">
+      Are you sure you want to remove selected {{selectedItems.length}} Item(s) ?
+    </div>
+    <div class="modal-body text-center" v-else>
+      No Items Selected.
+    </div>
+    <div class="modal-footer flex-row-reverse justify-content-between" v-if="selectedItems.length>0">
+      <p class="text-danger" v-if="cloudError"><small>An error occured while processing your request. Please check your information and try again, or <a href="/contact">contact support</a> if the error persists.</small></p>
+      <ajax-button type="submit" :syncing="syncing" class="btn-danger btn-lg">Yes</ajax-button>
+      <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">Cancel</button>
+    </div>
+    <div class="modal-footer" v-else>
+      <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Ok</button>
+    </div>
+  </ajax-form>
+</modal>
+
+<!-- delete modal with dialogbox --------------------------------------------------------------------------------------------------------------------><% /* "Delete" modal */ %>
+
+
+<div class="container"><br><br>
+  <h1 class="pull-left">Users Manager</h1>
+  <div class="pull-right">
+    <a v-bind:href="itemView" class="btn btn-success btn-sm text-white pull-right py-2"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add New</a>
+    <a @click="deleteItems()" class="btn btn-danger btn-sm pull-right text-white py-2 mr-sm-2 mr-2"><i class="fa fa-minus"></i>&nbsp;&nbsp;Delete</a>
+  </div>
+  <div class="clearfix"></div>
+  <hr>
+
+  <!-- </div> -->
+  <div id="showResult"></div>
+  <form v-bind:action="listView" method="get" class="form-inline py-3">
+
+    <label class="sr-only" for="inlineFormInputName2">Search</label>
+    <input type="text" class="form-control mb-2 mr-sm-2" id="name" name="name" v-model="formData.name" placeholder="Search">
+    <button type="submit" class="btn btn-success mb-2">Search</button>
+
+  </form>
+  <div class="table-responsive">
+    <table class="table table-bordered border">
+      <thead class="thead-dark">
+        <tr>
+          <th class="text-center" ><input type="checkbox" @click="selectAll" v-model="allSelected"></th>
+          <th class="text-center">User Name</th>
+          <th class="text-center">Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in data">
+          <td class="text-center"><input type="checkbox" class="text-center"v-model="selectedItems" @click="select" :value="item.id"></td>
+          <td><a v-bind:href="'/account/'+ item.id" class="text-center">{{item.fullName}}</a></td>
+          <td class="text-center">{{item.emailAddress}}</td>
+          <tfoot v-if="data.length == 0 ">
+            <tr>
+              <td colspan="3" class="text-center">No Data Found.</td>
+            </tr>
+          </tfoot>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Pegination -->
+<nav aria-label="Page navigation example " class="table-pagination">
+  <ul class="pagination justify-content-end">
+    <ul class="pagination">
+
+      <li :class="page == 0 ? 'page-item disabled' : 'page-item'">
+        <a class="page-link" :href="listView+'?page=0'" tabindex="-1">Start</a>
+      </li>
+
+      <li :class="page == 0 ? 'page-item disabled' : 'page-item'">
+        <a class="page-link" :href="listView+'?page='+(page-1)" tabindex="-1">Previous</a>
+      </li>
+
+      <li :class="page == n ? 'page-item active' : 'page-item'" v-for="n in pagination(page,pageCount-1)">
+        <a class="page-link" :href="listView+'?page='+(n)">{{n+1}}</a>
+      </li>
+
+      <li :class="page+1 >= pageCount ? 'page-item disabled' : 'page-item'">
+        <a class="page-link" :href="listView+'?page='+(page+1)" tabindex="-1">Next</a>
+      </li>
+
+      <li :class="page+1 >= pageCount ? 'page-item disabled' : 'page-item'">
+        <a class="page-link" :href="listView+'?page='+(pageCount-1)" tabindex="-1">End</a>
+      </li>
+
+    </ul>
+  </ul>
+</nav>
+
+</div>
+
+</div>
+<%- /* Expose server-rendered data as window.SAILS_LOCALS :: */ exposeLocalsToBrowser() %>
